@@ -1,7 +1,7 @@
 {
 	"types": [
 		{
-			"name": "Source",
+			"name": "AnalyzedClass",
 			"namespace": "xsbti.api",
 			"target": "Java",
 			"type": "record",
@@ -11,49 +11,61 @@
 					"type": "Compilation"
 				},
 				{
-					"name": "hash",
-					"type": "byte*"
+					"name": "name",
+					"type": "String"
 				},
 				{
 					"name": "api",
-					"type": "SourceAPI"
+					"type": "Companions"
 				},
 				{
 					"name": "apiHash",
 					"type": "int"
 				},
 				{
-					"name": "_internalOnly_nameHashes",
-					"type": "_internalOnly_NameHashes"
+					"name": "nameHashes",
+					"type": "NameHashes"
 				},
 				{
 					"name": "hasMacro",
-					"type": "boolean"
-				},
-				{
-					"name": "hasPackageObject",
 					"type": "boolean"
 				}
 			]
 		},
 		{
-			"name": "_internalOnly_NameHashes",
+			"name": "Companions",
+			"namespace": "xsbti.api",
+			"target": "Java",
+			"type": "record",
+			"fields": [
+				{
+					"name": "classApi",
+					"type": "ClassLike"
+				},
+				{
+					"name": "objectApi",
+					"type": "ClassLike"
+				}
+			]
+		},
+		{
+			"name": "NameHashes",
 			"namespace": "xsbti.api",
 			"target": "Java",
 			"type": "record",
 			"fields": [
 				{
 					"name": "regularMembers",
-					"type": "_internalOnly_NameHash*"
+					"type": "NameHash*"
 				},
 				{
 					"name": "implicitMembers",
-					"type": "_internalOnly_NameHash*"
+					"type": "NameHash*"
 				}
 			]
 		},
 		{
-			"name": "_internalOnly_NameHash",
+			"name": "NameHash",
 			"namespace": "xsbti.api",
 			"target": "Java",
 			"type": "record",
@@ -65,22 +77,6 @@
 				{
 					"name": "hash",
 					"type": "int"
-				}
-			]
-		},
-		{
-			"name": "SourceAPI",
-			"namespace": "xsbti.api",
-			"target": "Java",
-			"type": "record",
-			"fields": [
-				{
-					"name": "packages",
-					"type": "Package*"
-				},
-				{
-					"name": "definitions",
-					"type": "Definition*"
 				}
 			]
 		},
@@ -396,9 +392,11 @@
 			"namespace": "xsbti.api",
 			"target": "Java",
 			"type": "enumeration",
+			"doc": "Foo\nasdasd",
 			"types": [
 				"DependencyByMemberRef",
-				"DependencyByInheritance"
+				"DependencyByInheritance",
+				"LocalDependencyByInheritance"
 			]
 		},
 		{
@@ -408,12 +406,12 @@
 			"type": "record",
 			"fields": [
 				{
-					"name": "sourceFile",
-					"type": "java.io.File"
+					"name": "sourceClassName",
+					"type": "String"
 				},
 				{
-					"name": "targetFile",
-					"type": "java.io.File"
+					"name": "targetClassName",
+					"type": "String"
 				},
 				{
 					"name": "context",
@@ -428,16 +426,16 @@
 			"type": "record",
 			"fields": [
 				{
-					"name": "sourceFile",
-					"type": "java.io.File"
-				},
-				{
-					"name": "targetClassName",
+					"name": "sourceClassName",
 					"type": "String"
 				},
 				{
-					"name": "targetSource",
-					"type": "xsbti.api.Source"
+					"name": "targetBinaryClassName",
+					"type": "String"
+				},
+				{
+					"name": "targetClass",
+					"type": "xsbti.api.AnalyzedClass"
 				},
 				{
 					"name": "context",
