@@ -1,8 +1,11 @@
 /*
- * Zinc - The incremental compiler for Scala.
- * Copyright 2011 - 2017, Lightbend, Inc.
+ * Compiler Interface
+ *
+ * Copyright 2011 - 2019, Lightbend, Inc.
  * Copyright 2008 - 2010, Mark Harrah
- * This software is released under the terms written in LICENSE.
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
  */
 
 package xsbti.compile;
