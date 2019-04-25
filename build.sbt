@@ -55,14 +55,6 @@ lazy val compilerInterface = (project in file("compiler-interface"))
     commonSettings,
     name := "Compiler Interface",
     scalaVersion := scala212,
-    Compile / resourceGenerators += (Def.task {
-      generateVersionFile(
-        version.value,
-        resourceManaged.value,
-        streams.value,
-        (Compile / compile).value
-      )
-    }).taskValue,
     managedSourceDirectories in Compile +=
       baseDirectory.value / "src" / "main" / "contraband-java",
     sourceManaged in (Compile, generateContrabands) := baseDirectory.value / "src" / "main" / "contraband-java",
