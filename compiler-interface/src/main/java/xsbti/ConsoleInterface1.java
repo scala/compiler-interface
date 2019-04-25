@@ -25,4 +25,10 @@ public interface ConsoleInterface1 {
     Object[] bindValues,
     Logger log
   );
+
+  String[] commandArguments(
+    String[] args,
+    String bootClasspathString,
+    String classpathString,
+    Logger log);
 }
