@@ -32,17 +32,17 @@ lazy val compilerInterfaceRoot = (project in file("."))
     crossScalaVersions := Vector(),
     headerLicense := (ThisBuild / headerLicense).value,
     onLoadMessage := {
-      """                                _ __                _       __            ____              
-        |    _________  ____ ___  ____  (_) /__  _____      (_)___  / /____  _____/ __/___ _________ 
+      """                                _ __                _       __            ____
+        |    _________  ____ ___  ____  (_) /__  _____      (_)___  / /____  _____/ __/___ _________
         |   / ___/ __ \/ __ `__ \/ __ \/ / / _ \/ ___/_____/ / __ \/ __/ _ \/ ___/ /_/ __ `/ ___/ _ \
         |  / /__/ /_/ / / / / / / /_/ / / /  __/ /  /_____/ / / / / /_/  __/ /  / __/ /_/ / /__/  __/
-        |  \___/\____/_/ /_/ /_/ .___/_/_/\___/_/        /_/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/ 
-        |                     /_/                                                                   
+        |  \___/\____/_/ /_/ /_/ .___/_/_/\___/_/        /_/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/
+        |                     /_/
         |welcome to the build for sbt/compiler-interface.
         |""".stripMargin +
           (if (sys.props("java.specification.version") != "1.8")
             s"""!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-               |  Java versions is ${sys.props("java.specification.version")}. We recommend 1.8.
+               |  Java version is ${sys.props("java.specification.version")}. We recommend 1.8.
                |!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!""".stripMargin
           else "")
     },
