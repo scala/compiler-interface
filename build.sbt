@@ -1,6 +1,6 @@
 import Util._
 
-lazy val scala212 = "2.12.8"
+lazy val scala212 = "2.12.10"
 
 ThisBuild / headerLicense  := Some(HeaderLicense.Custom(
   """Scala compiler interface
