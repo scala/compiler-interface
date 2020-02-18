@@ -3,14 +3,16 @@ import Util._
 lazy val scala212 = "2.12.8"
 
 ThisBuild / headerLicense  := Some(HeaderLicense.Custom(
-  s"""Compiler Interface
-     |
-     |Copyright 2011 - 2019, Lightbend, Inc.
-     |Copyright 2008 - 2010, Mark Harrah
-     |
-     |Licensed under Apache License 2.0
-     |(http://www.apache.org/licenses/LICENSE-2.0).
-     |""".stripMargin
+  """Scala compiler interface
+    |
+    |Copyright Lightbend, Inc. and Mark Harrah
+    |
+    |Licensed under Apache License 2.0
+    |(http://www.apache.org/licenses/LICENSE-2.0).
+    |
+    |See the NOTICE file distributed with this work for
+    |additional information regarding copyright ownership.
+    |""".stripMargin
 ))
 
 def commonSettings: Seq[Setting[_]] = Seq(
