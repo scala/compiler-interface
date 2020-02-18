@@ -31,7 +31,7 @@ install:
   - unset SBT_OPTS
   - export JAVA_OPTS="-Xms2048M -Xmx2048M -Xss6M -XX:ReservedCodeCacheSize=256M"
 
-script: sbt -Dfile.encoding=UTF8 mimaReportBinaryIssues headerCheck packageBin doc
+script: sbt -Dfile.encoding=UTF8 compilerInterface/mimaReportBinaryIssues headerCheck packageBin doc
 
 before_cache:
   - find $HOME/.ivy2/cache -name "*-LM-SNAPSHOT*" -delete
