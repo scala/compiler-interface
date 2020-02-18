@@ -1,16 +1,18 @@
 import Util._
 
-lazy val scala212 = "2.12.8"
+lazy val scala212 = "2.12.10"
 
 ThisBuild / headerLicense  := Some(HeaderLicense.Custom(
-  s"""Compiler Interface
-     |
-     |Copyright 2011 - 2019, Lightbend, Inc.
-     |Copyright 2008 - 2010, Mark Harrah
-     |
-     |Licensed under Apache License 2.0
-     |(http://www.apache.org/licenses/LICENSE-2.0).
-     |""".stripMargin
+  """Scala compiler interface
+    |
+    |Copyright Lightbend, Inc. and Mark Harrah
+    |
+    |Licensed under Apache License 2.0
+    |(http://www.apache.org/licenses/LICENSE-2.0).
+    |
+    |See the NOTICE file distributed with this work for
+    |additional information regarding copyright ownership.
+    |""".stripMargin
 ))
 
 def commonSettings: Seq[Setting[_]] = Seq(
@@ -30,17 +32,17 @@ lazy val compilerInterfaceRoot = (project in file("."))
     crossScalaVersions := Vector(),
     headerLicense := (ThisBuild / headerLicense).value,
     onLoadMessage := {
-      """                                _ __                _       __            ____              
-        |    _________  ____ ___  ____  (_) /__  _____      (_)___  / /____  _____/ __/___ _________ 
+      """                                _ __                _       __            ____
+        |    _________  ____ ___  ____  (_) /__  _____      (_)___  / /____  _____/ __/___ _________
         |   / ___/ __ \/ __ `__ \/ __ \/ / / _ \/ ___/_____/ / __ \/ __/ _ \/ ___/ /_/ __ `/ ___/ _ \
         |  / /__/ /_/ / / / / / / /_/ / / /  __/ /  /_____/ / / / / /_/  __/ /  / __/ /_/ / /__/  __/
-        |  \___/\____/_/ /_/ /_/ .___/_/_/\___/_/        /_/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/ 
-        |                     /_/                                                                   
+        |  \___/\____/_/ /_/ /_/ .___/_/_/\___/_/        /_/_/ /_/\__/\___/_/  /_/  \__,_/\___/\___/
+        |                     /_/
         |welcome to the build for sbt/compiler-interface.
         |""".stripMargin +
           (if (sys.props("java.specification.version") != "1.8")
             s"""!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-               |  Java versions is ${sys.props("java.specification.version")}. We recommend 1.8.
+               |  Java version is ${sys.props("java.specification.version")}. We recommend 1.8.
                |!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!""".stripMargin
           else "")
     },

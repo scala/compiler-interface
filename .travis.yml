@@ -1,45 +1,13 @@
-sudo: false
-dist: xenial
-group: stable
+version: ~> 1.0 # needed for imports
+
+import: scala/scala-dev:travis/default.yml
 
 language: scala
 
-scala: 2.12.8
+scala: 2.12.10
 
-matrix:
-  include:
-  - env:
-      - TRAVIS_JDK=11.0.2.hs-adpt
-  - env:
-      - TRAVIS_JDK=8.0.202.hs-adpt
+env:
+  - ADOPTOPENJDK=8
+  - ADOPTOPENJDK=11
 
-before_install:
-  # adding $HOME/.sdkman to cache would create an empty directory, which interferes with the initial installation
-  - "[[ -d /home/travis/.sdkman/ ]] && [[ -d /home/travis/.sdkman/bin/ ]] || rm -rf /home/travis/.sdkman/"
-  - curl -sL https://get.sdkman.io | bash
-  - echo sdkman_auto_answer=true > /home/travis/.sdkman/etc/config
-  - source "/home/travis/.sdkman/bin/sdkman-init.sh"
-
-install:
-  - sdk install java $TRAVIS_JDK
-  - unset _JAVA_OPTIONS
-  - java -Xmx32m -version
-  # detect sbt version from project/build.properties
-  - export TRAVIS_SBT=$(grep sbt.version= project/build.properties | sed -e 's/sbt.version=//g' ) && echo "sbt $TRAVIS_SBT"
-  - sdk install sbt $TRAVIS_SBT
-  # override Travis CI's SBT_OPTS
-  - unset SBT_OPTS
-  - export JAVA_OPTS="-Xms2048M -Xmx2048M -Xss6M -XX:ReservedCodeCacheSize=256M"
-
-script: sbt -Dfile.encoding=UTF8 mimaReportBinaryIssues headerCheck packageBin doc
-
-before_cache:
-  - find $HOME/.ivy2/cache -name "*-LM-SNAPSHOT*" -delete
-  - find $HOME/.ivy2/cache -name "ivydata-*.properties" -delete
-  - find $HOME/.sbt        -name "*.lock"               -delete
-
-cache:
-  directories:
-    - $HOME/.ivy2/cache
-    - $HOME/.sbt/boot
-    - $HOME/.sdkman
+script: sbt -Dfile.encoding=UTF8 compilerInterface/mimaReportBinaryIssues headerCheck packageBin doc
