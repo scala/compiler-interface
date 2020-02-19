@@ -15,25 +15,18 @@ package xsbti;
 import xsbti.compile.*;
 import java.io.File;
 
-/**
- * Compiler Interface as of Zinc 1.2.0.
- */
+/** Compiler Interface as of Zinc 1.2.0. */
 public interface CompilerInterface1 {
   /** Returns a new compiler used for caching. */
   CachedCompiler newCompiler(
-    String[] options,
-    Output output,
-    Logger initialLog,
-    Reporter initialDelegate
-  );
+      String[] options, Output output, Logger initialLog, Reporter initialDelegate);
 
   void run(
-    File[] sources,
-    DependencyChanges changes,
-    AnalysisCallback callback,
-    Logger log,
-    Reporter delegate,
-    CompileProgress progress,
-    CachedCompiler cached
-  );
+      VirtualFile[] sources,
+      DependencyChanges changes,
+      AnalysisCallback callback,
+      Logger log,
+      Reporter delegate,
+      CompileProgress progress,
+      CachedCompiler cached);
 }

@@ -22,6 +22,5 @@ public interface InteractiveConsoleFactory {
       ClassLoader loader,
       String[] bindNames,
       Object[] bindValues,
-      Logger log
-  );
+      Logger log);
 }

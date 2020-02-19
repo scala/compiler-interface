@@ -12,7 +12,8 @@
 
 package xsbti;
 
-public enum Severity
-{
-	Info, Warn, Error
+public enum Severity {
+  Info,
+  Warn,
+  Error
 }

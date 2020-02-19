@@ -10,4 +10,4 @@ env:
   - ADOPTOPENJDK=8
   - ADOPTOPENJDK=11
 
-script: sbt -Dfile.encoding=UTF8 compilerInterface/mimaReportBinaryIssues headerCheck packageBin doc
+script: sbt -Dfile.encoding=UTF8 compilerInterface/headerCheck jvmfmtCheck dummyBridge/test doc

@@ -13,8 +13,8 @@
 package xsbti.compile;
 
 /**
- * Represent an interface of the toolchain of Java compilation that gives
- * access javadoc generation and Java compilation.
+ * Represent an interface of the toolchain of Java compilation that gives access javadoc generation
+ * and Java compilation.
  */
 public interface JavaTools {
   /** Return an implementation of the Java compiler (javac). */

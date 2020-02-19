@@ -12,85 +12,85 @@
 
 package xsbti.compile;
 
-import java.io.File;
 import java.util.Optional;
 import java.util.Set;
+import xsbti.VirtualFileRef;
+import xsbti.VirtualFile;
 
 /**
- * Defines hooks that can be user-defined to modify the behaviour of
- * internal components of the incremental compiler.
+ * Defines hooks that can be user-defined to modify the behaviour of internal components of the
+ * incremental compiler.
  */
 public interface ExternalHooks {
-    /**
-     * Defines an interface for a lookup mechanism.
-     */
-    interface Lookup {
-
-        /**
-         * Used to provide information from external tools into sbt (e.g. IDEs)
-         *
-         * @param previousAnalysis
-         * @return None if is unable to determine what was changed, changes otherwise
-         */
-        Optional<Changes<File>> getChangedSources(CompileAnalysis previousAnalysis);
-
-        /**
-         * Used to provide information from external tools into sbt (e.g. IDEs)
-         *
-         * @param previousAnalysis
-         * @return None if is unable to determine what was changed, changes otherwise
-         */
-        Optional<Set<File>> getChangedBinaries(CompileAnalysis previousAnalysis);
-
-        /**
-         * Used to provide information from external tools into sbt (e.g. IDEs)
-         *
-         * @param previousAnalysis
-         * @return None if is unable to determine what was changed, changes otherwise
-         */
-        Optional<Set<File>> getRemovedProducts(CompileAnalysis previousAnalysis);
-
-        /**
-         * Used to provide information from external tools into sbt (e.g. IDEs)
-         *
-         * @return API changes
-         */
-        boolean shouldDoIncrementalCompilation(Set<String> changedClasses, CompileAnalysis previousAnalysis);
-
-        Optional<FileHash[]> hashClasspath(File[] classpath);
-    }
+  /** Defines an interface for a lookup mechanism. */
+  interface Lookup {
 
     /**
-     * Returns the implementation of a lookup mechanism to be used instead of
-     * the internal lookup provided by the default implementation.
-     */
-    Optional<Lookup> getExternalLookup();
-
-    /**
-     * Returns the implementation of a {@link ClassFileManager} to be used
-     * alongside the internal manager provided by the default implementation.
-     * <p>
-     * This class file manager is run after the internal
-     * {@link ClassFileManager} defined in {@link IncOptions}.
-     */
-    Optional<ClassFileManager> getExternalClassFileManager();
-
-    /**
-     * Returns an instance of hooks that executes the external passed class file manager.
+     * Used to provide information from external tools into sbt (e.g. IDEs)
      *
-     * If several class file manager are passed, they are aggregated and their execution happens
-     * in the order of invocations of this method.
-     *
-     * @return An instance of {@link ExternalHooks} with the aggregated external class file manager.
+     * @param previousAnalysis
+     * @return None if is unable to determine what was changed, changes otherwise
      */
-    ExternalHooks withExternalClassFileManager(ClassFileManager externalClassFileManager);
+    Optional<Changes<VirtualFileRef>> getChangedSources(CompileAnalysis previousAnalysis);
 
     /**
-     * Returns an instance of hooks with one lookup.
+     * Used to provide information from external tools into sbt (e.g. IDEs)
      *
-     * If used several times, only the last lookup instance will be used.
-     *
-     * @return An instance of {@link ExternalHooks} with the specified lookup.
+     * @param previousAnalysis
+     * @return None if is unable to determine what was changed, changes otherwise
      */
-    ExternalHooks withExternalLookup(Lookup externalLookup);
+    Optional<Set<VirtualFileRef>> getChangedBinaries(CompileAnalysis previousAnalysis);
+
+    /**
+     * Used to provide information from external tools into sbt (e.g. IDEs)
+     *
+     * @param previousAnalysis
+     * @return None if is unable to determine what was changed, changes otherwise
+     */
+    Optional<Set<VirtualFileRef>> getRemovedProducts(CompileAnalysis previousAnalysis);
+
+    /**
+     * Used to provide information from external tools into sbt (e.g. IDEs)
+     *
+     * @return API changes
+     */
+    boolean shouldDoIncrementalCompilation(
+        Set<String> changedClasses, CompileAnalysis previousAnalysis);
+
+    Optional<FileHash[]> hashClasspath(VirtualFile[] classpath);
+  }
+
+  /**
+   * Returns the implementation of a lookup mechanism to be used instead of the internal lookup
+   * provided by the default implementation.
+   */
+  Optional<Lookup> getExternalLookup();
+
+  /**
+   * Returns the implementation of a {@link ClassFileManager} to be used alongside the internal
+   * manager provided by the default implementation.
+   *
+   * <p>This class file manager is run after the internal {@link ClassFileManager} defined in {@link
+   * IncOptions}.
+   */
+  Optional<ClassFileManager> getExternalClassFileManager();
+
+  /**
+   * Returns an instance of hooks that executes the external passed class file manager.
+   *
+   * <p>If several class file manager are passed, they are aggregated and their execution happens in
+   * the order of invocations of this method.
+   *
+   * @return An instance of {@link ExternalHooks} with the aggregated external class file manager.
+   */
+  ExternalHooks withExternalClassFileManager(ClassFileManager externalClassFileManager);
+
+  /**
+   * Returns an instance of hooks with one lookup.
+   *
+   * <p>If used several times, only the last lookup instance will be used.
+   *
+   * @return An instance of {@link ExternalHooks} with the specified lookup.
+   */
+  ExternalHooks withExternalLookup(Lookup externalLookup);
 }

@@ -15,46 +15,57 @@ package xsbti.compile;
 import java.io.File;
 
 /**
- * A Scala instance encapsulates all the information that is bound to a concrete
- * Scala version, like the ClassLoader or all the JARs required
- * for Scala compilation: library jar, compiler jar and others.
+ * A Scala instance encapsulates all the information that is bound to a concrete Scala version, like
+ * the ClassLoader or all the JARs required for Scala compilation: library jar, compiler jar and
+ * others.
  *
- * Both a `ClassLoader` and the jars are required because the compiler's
- * boot classpath requires the location of the library and compiler jar
- * on the classpath to compile any Scala program and macros.
+ * <p>Both a `ClassLoader` and the jars are required because the compiler's boot classpath requires
+ * the location of the library and compiler jar on the classpath to compile any Scala program and
+ * macros.
  *
- * <b>NOTE</b>: A "jar" can actually be any valid classpath entry.
+ * <p><b>NOTE</b>: A "jar" can actually be any valid classpath entry.
  */
 public interface ScalaInstance {
-	/**
-	 * Scala version for this {@link ScalaInstance}.
-	 *
-	 * It need not to be unique and can be dynamic (e.g. 2.10.0-SNAPSHOT).
-	 */
-	String version();
+  /**
+   * Scala version for this {@link ScalaInstance}.
+   *
+   * <p>It need not to be unique and can be dynamic (e.g. 2.10.0-SNAPSHOT).
+   */
+  String version();
 
-	/** A class loader providing access to the classes and resources in the library and compiler jars. */
-	ClassLoader loader();
+  /**
+   * A class loader providing access to the classes and resources in all the jars of this Scala
+   * instance.
+   */
+  ClassLoader loader();
 
-	/** A class loader providing access to the classes and resources in the library. */
-	ClassLoader loaderLibraryOnly();
+  /**
+   * A class loader providing access to the classes and resources in the library jars of this Scala
+   * instance.
+   */
+  ClassLoader loaderLibraryOnly();
 
-	/** Only `jars` can be reliably provided for modularized Scala. */
-	File libraryJar();
+  /** Classpath entries that stores the Scala library classes. */
+  File[] libraryJars();
 
-	/** Only `jars` can be reliably provided for modularized Scala. */
-	File compilerJar();
+  /** @deprecated Use `libraryJars` instead (since 1.3.0). */
+  @Deprecated
+  default File libraryJar() {
+    return libraryJars()[0];
+  }
 
-	/** @deprecated Only `jars` can be reliably provided for modularized Scala (since 0.13.0). */
-	@Deprecated
-	File[] otherJars();
+  /** Classpath entry that stores the Scala compiler classes. */
+  File compilerJar();
 
-	/** All jar files provided by this Scala instance. */
-	File[] allJars();
+  /** All the jars except `libraryJars` and `compilerJar`. */
+  File[] otherJars();
 
-	/**
-	 * The unique identifier for this Scala instance, usually obtained
-	 * (but not necessarily) from `compiler.properties` files.
-	 */
-	String actualVersion();
+  /** Classpath entries for the `loader`. */
+  File[] allJars();
+
+  /**
+   * The unique identifier for this Scala instance, usually obtained (but not necessarily) from
+   * `compiler.properties` files.
+   */
+  String actualVersion();
 }
