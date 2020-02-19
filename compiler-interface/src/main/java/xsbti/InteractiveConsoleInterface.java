@@ -14,5 +14,6 @@ package xsbti;
 
 public interface InteractiveConsoleInterface {
   void reset();
+
   InteractiveConsoleResponse interpret(String line, boolean synthetic);
 }

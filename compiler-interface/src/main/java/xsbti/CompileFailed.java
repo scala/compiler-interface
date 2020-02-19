@@ -13,13 +13,13 @@
 package xsbti;
 
 /**
- * Represent a failure occurred during compilation of Java or Scala sources.
- * This failure extends {@link RuntimeException} that you can catch at the use-site.
+ * Represent a failure occurred during compilation of Java or Scala sources. This failure extends
+ * {@link RuntimeException} that you can catch at the use-site.
  */
 public abstract class CompileFailed extends RuntimeException {
-    /** Return an array of the initial arguments of the compiler. */
-	public abstract String[] arguments();
+  /** Return an array of the initial arguments of the compiler. */
+  public abstract String[] arguments();
 
-	/** Return an array of {@link Problem} that reports on the found errors. */
-	public abstract Problem[] problems();
+  /** Return an array of {@link Problem} that reports on the found errors. */
+  public abstract Problem[] problems();
 }

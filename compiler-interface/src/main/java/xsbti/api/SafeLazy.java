@@ -17,10 +17,9 @@ import java.util.function.Supplier;
 /**
  * Implement a Scala `lazy val` in Java for the facing sbt interface.
  *
- * It holds a reference to a thunk that is lazily evaluated and then
- * its reference is clear to avoid memory leaks in memory-intensive code.
- * It needs to be defined in [[xsbti]] or a subpackage, see [[xsbti.api.Lazy]]
- * for similar definitions.
+ * <p>It holds a reference to a thunk that is lazily evaluated and then its reference is clear to
+ * avoid memory leaks in memory-intensive code. It needs to be defined in [[xsbti]] or a subpackage,
+ * see [[xsbti.api.Lazy]] for similar definitions.
  */
 public final class SafeLazy {
 
@@ -35,12 +34,13 @@ public final class SafeLazy {
   /** Return a sbt [[xsbti.api.Lazy]] from a strict value. */
   public static <T> xsbti.api.Lazy<T> strict(T value) {
     // Convert strict parameter to sbt function returning it
-    return apply(new Supplier<T>() {
-      @Override
-      public T get() {
-        return value;
-      }
-    });
+    return apply(
+        new Supplier<T>() {
+          @Override
+          public T get() {
+            return value;
+          }
+        });
   }
 
   private static final class Impl<T> extends xsbti.api.AbstractLazy<T> {
@@ -54,8 +54,8 @@ public final class SafeLazy {
 
     /**
      * Return cached result or force lazy evaluation.
-     * 
-     * Don't call it in a multi-threaded environment.
+     *
+     * <p>Don't call it in a multi-threaded environment.
      */
     public T get() {
       if (flag) return result;
@@ -69,5 +69,3 @@ public final class SafeLazy {
     }
   }
 }
-
-

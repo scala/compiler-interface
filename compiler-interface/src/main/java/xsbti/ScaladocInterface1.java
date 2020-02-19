@@ -12,9 +12,7 @@
 
 package xsbti;
 
-/**
- * Scaladoc Interface as of Zinc 1.2.0.
- */
+/** Scaladoc Interface as of Zinc 1.2.0. */
 public interface ScaladocInterface1 {
   void run(String[] args, Logger log, Reporter delegate);
 }

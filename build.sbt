@@ -1,9 +1,11 @@
+import Dependencies._
 import Util._
 
 lazy val scala212 = "2.12.10"
 
-ThisBuild / headerLicense  := Some(HeaderLicense.Custom(
-  """Scala compiler interface
+ThisBuild / headerLicense := Some(
+  HeaderLicense.Custom(
+    """Scala compiler interface
     |
     |Copyright Lightbend, Inc. and Mark Harrah
     |
@@ -13,7 +15,8 @@ ThisBuild / headerLicense  := Some(HeaderLicense.Custom(
     |See the NOTICE file distributed with this work for
     |additional information regarding copyright ownership.
     |""".stripMargin
-))
+  )
+)
 
 def commonSettings: Seq[Setting[_]] = Seq(
   Test / publishArtifact := false,
@@ -26,7 +29,7 @@ def commonSettings: Seq[Setting[_]] = Seq(
 )
 
 lazy val compilerInterfaceRoot = (project in file("."))
-  .aggregate(compilerInterface)
+  .aggregate(compilerInterface, dummyBridge)
   .settings(
     publish / skip := true,
     crossScalaVersions := Vector(),
@@ -40,11 +43,11 @@ lazy val compilerInterfaceRoot = (project in file("."))
         |                     /_/
         |welcome to the build for sbt/compiler-interface.
         |""".stripMargin +
-          (if (sys.props("java.specification.version") != "1.8")
-            s"""!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        (if (sys.props("java.specification.version") != "1.8")
+           s"""!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                |  Java version is ${sys.props("java.specification.version")}. We recommend 1.8.
                |!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!""".stripMargin
-          else "")
+         else "")
     },
   )
 
@@ -63,13 +66,24 @@ lazy val compilerInterface = (project in file("compiler-interface"))
     crossPaths := false,
     autoScalaLibrary := false,
     mimaPreviousArtifacts := Set(
-      "1.0.0", "1.0.1", "1.0.2", "1.0.3", "1.0.4", "1.0.5",
-      "1.1.0", "1.1.1", "1.1.2", "1.1.3",
-      "1.2.0", "1.2.1", "1.2.2",
-    ) map (version =>
-      organization.value %% moduleName.value % version
-        cross (if (crossPaths.value) CrossVersion.binary else CrossVersion.disabled)
-    ),
+      "1.0.0",
+      "1.0.1",
+      "1.0.2",
+      "1.0.3",
+      "1.0.4",
+      "1.0.5",
+      "1.1.0",
+      "1.1.1",
+      "1.1.2",
+      "1.1.3",
+      "1.2.0",
+      "1.2.1",
+      "1.2.2",
+    ) map (
+        version =>
+          organization.value %% moduleName.value % version
+            cross (if (crossPaths.value) CrossVersion.binary else CrossVersion.disabled)
+      ),
     mimaBinaryIssueFilters ++= {
       import com.typesafe.tools.mima.core._
       import com.typesafe.tools.mima.core.ProblemFilters._
@@ -81,6 +95,33 @@ lazy val compilerInterface = (project in file("compiler-interface"))
         exclude[ReversedMissingMethodProblem]("xsbti.AnalysisCallback.classesInOutputJar"),
         exclude[ReversedMissingMethodProblem]("xsbti.compile.IncrementalCompiler.compile"),
         exclude[DirectMissingMethodProblem]("xsbti.compile.IncrementalCompiler.compile")
+      )
+    },
+  )
+
+lazy val dummyBridge = (project in file("dummy-bridge"))
+  .dependsOn(compilerInterface)
+  .settings(
+    name := "Dummy Compiler Bridge",
+    scalaVersion := "2.13.1",
+    publish / skip := true,
+    exportJars := true,
+    libraryDependencies += "org.scala-lang" % "scala-compiler" % scalaVersion.value,
+    testFrameworks += new TestFramework("verify.runner.Framework"),
+    libraryDependencies ++= Seq(verify % Test, sbtIo % Test),
+    // we need to fork because in unit tests we set usejavacp = true which means
+    // we are expecting all of our dependencies to be on classpath so Scala compiler
+    // can use them while constructing its own classpath for compilation
+    Test / fork := true,
+    // needed because we fork tests and tests are ran in parallel so we have multiple Scala
+    // compiler instances that are memory hungry
+    Test / javaOptions ++= {
+      val si = (Test / scalaInstance).value
+      val bridge = (Compile / packageBin).value
+      List(
+        "-Xmx1G",
+        "-Dtest.bridgejar=" + bridge.toString,
+        "-Dtest.sijars=" + si.allJars.toList.mkString(sys.props("path.separator"))
       )
     },
   )
@@ -100,11 +141,15 @@ ThisBuild / developers := List(
 )
 
 ThisBuild / description := "a binary contract between Zinc and Scala compilers"
-ThisBuild / licenses := List("Apache-2.0" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt"))
+ThisBuild / licenses := List(
+  "Apache-2.0" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")
+)
 ThisBuild / homepage := Some(url("https://github.com/sbt/compiler-interface"))
 
 // Remove all additional repository other than Maven Central from POM
-ThisBuild / pomIncludeRepository := { _ => false }
+ThisBuild / pomIncludeRepository := { _ =>
+  false
+}
 ThisBuild / publishTo := {
   val nexus = "https://oss.sonatype.org/"
   if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
