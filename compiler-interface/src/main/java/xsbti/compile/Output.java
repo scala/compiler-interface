@@ -28,8 +28,8 @@ import java.util.Optional;
  * <p>Note that Javac does not support multiple output and any attempt to use it will result in a
  * runtime exception.
  *
- * <p>This class is used both as an input to the compiler and as an output of the {@link
- * xsbti.compile.CompileAnalysis}.
+ * <p>This class is used both as an input to the compiler and as an output of the
+ * xsbti.compile.CompileAnalysis.
  */
 public interface Output extends Serializable {
   /**
