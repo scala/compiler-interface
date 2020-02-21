@@ -13,7 +13,7 @@ package xsbt
 
 import java.io.PrintWriter
 import java.nio.file.Path
-import xsbti.compile.Output
+import scala.tools.sci.compile.Output
 import scala.tools.nsc.Settings
 import scala.tools.nsc.interpreter.shell.ReplReporterImpl
 import scala.reflect.io.AbstractFile

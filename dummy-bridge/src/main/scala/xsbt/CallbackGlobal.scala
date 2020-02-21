@@ -11,8 +11,8 @@
 
 package xsbt
 
-import xsbti.{ AnalysisCallback, Severity }
-import xsbti.compile._
+import scala.tools.sci.{ AnalysisCallback, Severity }
+import scala.tools.sci.compile._
 
 import scala.tools.nsc._
 import io.AbstractFile

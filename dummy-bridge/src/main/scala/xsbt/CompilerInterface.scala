@@ -11,8 +11,15 @@
 
 package xsbt
 
-import xsbti.{ AnalysisCallback, CompilerInterface1, Logger, Problem, Reporter, VirtualFile }
-import xsbti.compile._
+import scala.tools.sci.{
+  AnalysisCallback,
+  CompilerInterface1,
+  Logger,
+  Problem,
+  Reporter,
+  VirtualFile
+}
+import scala.tools.sci.compile._
 import scala.tools.nsc.Settings
 import scala.collection.mutable
 import scala.reflect.io.AbstractFile
@@ -44,10 +51,10 @@ class InterfaceCompileFailed(
     val arguments: Array[String],
     val problems: Array[Problem],
     override val toString: String
-) extends xsbti.CompileFailed
+) extends scala.tools.sci.CompileFailed
 
 class InterfaceCompileCancelled(val arguments: Array[String], override val toString: String)
-    extends xsbti.CompileCancelled
+    extends scala.tools.sci.CompileCancelled
 
 private final class WeakLog(private[this] var log: Logger, private[this] var delegate: Reporter) {
   def apply(message: String): Unit = {

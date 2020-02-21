@@ -12,7 +12,7 @@
 package xsbt
 
 object Log {
-  def debug(log: xsbti.Logger, msg: => String) = log.debug(Message(msg))
-  def settingsError(log: xsbti.Logger): String => Unit =
+  def debug(log: scala.tools.sci.Logger, msg: => String) = log.debug(Message(msg))
+  def settingsError(log: scala.tools.sci.Logger): String => Unit =
     s => log.error(Message(s))
 }

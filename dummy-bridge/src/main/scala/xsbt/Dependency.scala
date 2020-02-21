@@ -12,8 +12,8 @@
 package xsbt
 
 import java.nio.file.{ Path, Paths }
-import xsbti.VirtualFile
-import xsbti.api.DependencyContext
+import scala.tools.sci.VirtualFile
+import scala.tools.sci.api.DependencyContext
 import DependencyContext._
 
 import scala.tools.nsc.io.{ PlainFile, ZipArchive }

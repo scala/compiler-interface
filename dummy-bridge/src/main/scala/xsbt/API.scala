@@ -13,8 +13,8 @@ package xsbt
 
 import scala.tools.nsc.Phase
 import scala.tools.nsc.symtab.Flags
-import xsbti.api._
-import xsbti.VirtualFile
+import scala.tools.sci.api._
+import scala.tools.sci.VirtualFile
 
 object API {
   val name = "xsbt-api"

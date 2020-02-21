@@ -4,8 +4,8 @@ import verify._
 import java.nio.file.{ Path, Paths }
 import sbt.io.IO
 import sbt.io.syntax._
-import xsbti.{ VirtualFile, VirtualFileRef }
-import xsbti.compile.{ CompileProgress, DependencyChanges }
+import scala.tools.sci.{ VirtualFile, VirtualFileRef }
+import scala.tools.sci.compile.{ CompileProgress, DependencyChanges }
 
 object CompilerInterfaceTest extends BasicTestSuite {
 
@@ -27,7 +27,7 @@ object A {
       val vs = Vector(vFile)
       val bridge = ReflectionUtil.bridgeInstance("xsbt.CompilerInterface")
       bridge match {
-        case intf: xsbti.CompilerInterface1 =>
+        case intf: scala.tools.sci.CompilerInterface1 =>
           val scalaLibraryJar = ReflectionUtil.scalaLibraryJar
           val cachedCompiler =
             intf.newCompiler(Array("-classpath", scalaLibraryJar.toString), output, log, reporter)
@@ -50,6 +50,7 @@ object A {
   }
 }
 
-final class ConcreteSingleOutput(val getOutputDirectory: Path) extends xsbti.compile.SingleOutput {
+final class ConcreteSingleOutput(val getOutputDirectory: Path)
+    extends scala.tools.sci.compile.SingleOutput {
   override def toString: String = s"SingleOutput($getOutputDirectory)"
 }

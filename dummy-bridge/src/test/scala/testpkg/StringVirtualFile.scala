@@ -1,7 +1,7 @@
 package testpkg
 
 import java.io.{ InputStream, ByteArrayInputStream }
-import xsbti.{ BasicVirtualFileRef, VirtualFile }
+import scala.tools.sci.{ BasicVirtualFileRef, VirtualFile }
 
 case class StringVirtualFile(path: String, content: String)
     extends BasicVirtualFileRef(path)

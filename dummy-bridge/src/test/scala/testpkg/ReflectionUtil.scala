@@ -38,14 +38,14 @@ object ReflectionUtil {
       scalaLoader: ClassLoader,
       sbtLoader: ClassLoader
   ): ClassLoader = {
-    val xsbtiFilter = (name: String) => name.startsWith("xsbti.")
-    val notXsbtiFilter = (name: String) => !xsbtiFilter(name)
+    val intfFilter = (name: String) => name.startsWith("scala.tools.sci.")
+    val notIntfFilter = (name: String) => !intfFilter(name)
     new DualLoader(
       scalaLoader,
-      notXsbtiFilter,
+      notIntfFilter,
       _ => true,
       sbtLoader,
-      xsbtiFilter,
+      intfFilter,
       _ => false
     )
   }

@@ -2,7 +2,7 @@
   "types": [
     {
       "name": "Definition",
-      "namespace": "xsbti.api",
+      "namespace": "scala.tools.sci.api",
       "target": "Java",
       "type": "interface",
       "fields": [
@@ -15,13 +15,13 @@
       "types": [
         {
           "name": "ClassDefinition",
-          "namespace": "xsbti.api",
+          "namespace": "scala.tools.sci.api",
           "target": "Java",
           "type": "interface",
           "types": [
             {
               "name": "FieldLike",
-              "namespace": "xsbti.api",
+              "namespace": "scala.tools.sci.api",
               "target": "Java",
               "type": "interface",
               "fields": [
@@ -29,13 +29,13 @@
               ],
 
               "types": [
-                { "name": "Val", "namespace": "xsbti.api", "target": "Java", "type": "record" },
-                { "name": "Var", "namespace": "xsbti.api", "target": "Java", "type": "record" }
+                { "name": "Val", "namespace": "scala.tools.sci.api", "target": "Java", "type": "record" },
+                { "name": "Var", "namespace": "scala.tools.sci.api", "target": "Java", "type": "record" }
               ]
             },
             {
               "name": "ParameterizedDefinition",
-              "namespace": "xsbti.api",
+              "namespace": "scala.tools.sci.api",
               "target": "Java",
               "type": "interface",
               "fields": [
@@ -45,7 +45,7 @@
               "types": [
                 {
                   "name": "Def",
-                  "namespace": "xsbti.api",
+                  "namespace": "scala.tools.sci.api",
                   "target": "Java",
                   "type": "record",
                   "fields": [
@@ -55,7 +55,7 @@
                 },
                 {
                   "name": "ClassLikeDef",
-                  "namespace": "xsbti.api",
+                  "namespace": "scala.tools.sci.api",
                   "target": "Java",
                   "type": "record",
                   "fields": [
@@ -64,14 +64,14 @@
                 },
                 {
                   "name": "TypeMember",
-                  "namespace": "xsbti.api",
+                  "namespace": "scala.tools.sci.api",
                   "target": "Java",
                   "type": "interface",
 
                   "types": [
                     {
                       "name": "TypeAlias",
-                      "namespace": "xsbti.api",
+                      "namespace": "scala.tools.sci.api",
                       "target": "Java",
                       "type": "record",
                       "fields": [
@@ -80,7 +80,7 @@
                     },
                     {
                       "name": "TypeDeclaration",
-                      "namespace": "xsbti.api",
+                      "namespace": "scala.tools.sci.api",
                       "target": "Java",
                       "type": "record",
                       "fields": [
@@ -96,7 +96,7 @@
         },
         {
           "name": "ClassLike",
-          "namespace": "xsbti.api",
+          "namespace": "scala.tools.sci.api",
           "target": "Java",
           "type": "record",
           "fields": [

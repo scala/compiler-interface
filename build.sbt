@@ -63,40 +63,19 @@ lazy val compilerInterface = (project in file("compiler-interface"))
     managedSourceDirectories in Compile +=
       baseDirectory.value / "src" / "main" / "contraband-java",
     sourceManaged in (Compile, generateContrabands) := baseDirectory.value / "src" / "main" / "contraband-java",
+    Compile / generateContrabands / contrabandJavaLazy := "scala.tools.sci.api.Lazy",
+    Compile / generateContrabands / contrabandInstantiateJavaLazy := { (v: String) =>
+      s"scala.tools.sci.api.SafeLazy($v)"
+    },
     crossPaths := false,
     autoScalaLibrary := false,
     mimaPreviousArtifacts := Set(
       "1.0.0",
-      "1.0.1",
-      "1.0.2",
-      "1.0.3",
-      "1.0.4",
-      "1.0.5",
-      "1.1.0",
-      "1.1.1",
-      "1.1.2",
-      "1.1.3",
-      "1.2.0",
-      "1.2.1",
-      "1.2.2",
     ) map (
         version =>
           organization.value %% moduleName.value % version
             cross (if (crossPaths.value) CrossVersion.binary else CrossVersion.disabled)
       ),
-    mimaBinaryIssueFilters ++= {
-      import com.typesafe.tools.mima.core._
-      import com.typesafe.tools.mima.core.ProblemFilters._
-      Seq(
-        exclude[ReversedMissingMethodProblem]("xsbti.compile.ExternalHooks#Lookup.hashClasspath"),
-        exclude[ReversedMissingMethodProblem]("xsbti.compile.ScalaInstance.loaderLibraryOnly"),
-        exclude[DirectMissingMethodProblem]("xsbti.api.AnalyzedClass.of"),
-        exclude[DirectMissingMethodProblem]("xsbti.api.AnalyzedClass.create"),
-        exclude[ReversedMissingMethodProblem]("xsbti.AnalysisCallback.classesInOutputJar"),
-        exclude[ReversedMissingMethodProblem]("xsbti.compile.IncrementalCompiler.compile"),
-        exclude[DirectMissingMethodProblem]("xsbti.compile.IncrementalCompiler.compile")
-      )
-    },
   )
 
 lazy val dummyBridge = (project in file("dummy-bridge"))
