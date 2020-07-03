@@ -42,7 +42,7 @@ final class Analyzer(val global: CallbackGlobal) extends LocateClassFile {
     private lazy val classesWrittenByGenbcode: Set[String] = {
       JarUtils.outputJar match {
         case Some(jar) =>
-          val classes = global.callback.classesInOutputJar().asScala
+          val classes = global.oldCallback.classesInOutputJar().asScala
           classes.map(JarUtils.classNameInJar(jar, _)).toSet
         case None => Set.empty
       }
@@ -70,7 +70,7 @@ final class Analyzer(val global: CallbackGlobal) extends LocateClassFile {
               // Use own map of local classes computed before lambdalift to ascertain class locality
               if (localToNonLocalClass.isLocal(sym).getOrElse(true)) {
                 // Inform callback about local classes, non-local classes have been reported in API
-                callback.generatedLocalClass(sourceFile, classFile.toPath)
+                oldCallback.generatedLocalClass(sourceFile, classFile.toPath)
               }
             }
           }

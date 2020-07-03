@@ -16,7 +16,8 @@ object CompilerInterfaceTest extends BasicTestSuite {
       val output = new ConcreteSingleOutput(targetDir.toPath)
       val log = TestConsoleLogger()
       val reporter = new CollectingReporter
-      val callback = new TestCallback
+      val callback = new TestAPICallback
+      val oldCallback = new TestCallback
       val vFile: VirtualFile =
         StringVirtualFile("src/A.scala", """package example
 
@@ -31,7 +32,15 @@ object A {
           val scalaLibraryJar = ReflectionUtil.scalaLibraryJar
           val cachedCompiler =
             intf.newCompiler(Array("-classpath", scalaLibraryJar.toString), output, log, reporter)
-          cachedCompiler.run(vs.toArray, emptyChanges, callback, log, reporter, ignoreProgress)
+          cachedCompiler.run(
+            vs.toArray,
+            emptyChanges,
+            callback,
+            oldCallback,
+            log,
+            reporter,
+            ignoreProgress
+          )
           assert((targetDir / "example" / "A.class").exists)
           assert((targetDir / "example" / "A$.class").exists)
       }

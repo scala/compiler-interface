@@ -149,7 +149,7 @@ class ExtractUsedNames[GlobalType <: CallbackGlobal](val global: GlobalType)
             existingScopes
           }
         }
-        callback.usedName(className, useName, useScopes)
+        oldCallback.usedName(className, useName, useScopes)
       }
     }
   }

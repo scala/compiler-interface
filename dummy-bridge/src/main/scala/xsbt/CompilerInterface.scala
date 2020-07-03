@@ -11,7 +11,15 @@
 
 package xsbt
 
-import xsbti.{ AnalysisCallback, CompilerInterface1, Logger, Problem, Reporter, VirtualFile }
+import xsbti.{
+  AnalysisCallback,
+  APICallback,
+  CompilerInterface1,
+  Logger,
+  Problem,
+  Reporter,
+  VirtualFile
+}
 import xsbti.compile._
 import scala.tools.nsc.Settings
 import scala.collection.mutable
@@ -31,13 +39,14 @@ final class CompilerInterface extends CompilerInterface1 {
   def run(
       sources: Array[VirtualFile],
       changes: DependencyChanges,
-      callback: AnalysisCallback,
+      callback: APICallback,
+      oldCallback: AnalysisCallback,
       log: Logger,
       delegate: Reporter,
       progress: CompileProgress,
       cached: CachedCompiler
   ): Unit =
-    cached.run(sources, changes, callback, log, delegate, progress)
+    cached.run(sources, changes, callback, oldCallback, log, delegate, progress)
 }
 
 class InterfaceCompileFailed(
@@ -118,7 +127,8 @@ private final class CachedCompiler0(args: Array[String], output: Output, initial
   def run(
       sources: Array[VirtualFile],
       changes: DependencyChanges,
-      callback: AnalysisCallback,
+      callback: APICallback,
+      oldCallback: AnalysisCallback,
       log: Logger,
       delegate: Reporter,
       progress: CompileProgress
@@ -126,7 +136,7 @@ private final class CachedCompiler0(args: Array[String], output: Output, initial
     debug(log, infoOnCachedCompiler(hashCode().toLong.toHexString))
     val dreporter = DelegatingReporter(settings, delegate)
     try {
-      run(sources.toList, changes, callback, log, dreporter, progress)
+      run(sources.toList, changes, callback, oldCallback, log, dreporter, progress)
     } finally {
       dreporter.dropDelegate()
     }
@@ -138,7 +148,8 @@ private final class CachedCompiler0(args: Array[String], output: Output, initial
   private[this] def run(
       sources: List[VirtualFile],
       changes: DependencyChanges,
-      callback: AnalysisCallback,
+      callback: APICallback,
+      oldCallback: AnalysisCallback,
       log: Logger,
       underlyingReporter: DelegatingReporter,
       compileProgress: CompileProgress
@@ -151,7 +162,7 @@ private final class CachedCompiler0(args: Array[String], output: Output, initial
 
     if (noErrors(underlyingReporter)) {
       debug(log, prettyPrintCompilationArguments(args))
-      compiler.set(callback, underlyingReporter)
+      compiler.set(callback, oldCallback, underlyingReporter)
       val run = new compiler.ZincRun(compileProgress)
 
       val wrappedFiles = sources.map(new VirtualFileWrap(_))
@@ -160,7 +171,7 @@ private final class CachedCompiler0(args: Array[String], output: Output, initial
       run.compileFiles(sortedSourceFiles)
       processUnreportedWarnings(run)
       underlyingReporter.problems.foreach(p =>
-        callback.problem(p.category, p.position, p.message, p.severity, true)
+        oldCallback.problem(p.category, p.position, p.message, p.severity, true)
       )
     }
 

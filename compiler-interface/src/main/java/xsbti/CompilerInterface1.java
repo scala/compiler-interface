@@ -24,7 +24,8 @@ public interface CompilerInterface1 {
   void run(
       VirtualFile[] sources,
       DependencyChanges changes,
-      AnalysisCallback callback,
+      APICallback callback,
+      AnalysisCallback oldCallback,
       Logger log,
       Reporter delegate,
       CompileProgress progress,

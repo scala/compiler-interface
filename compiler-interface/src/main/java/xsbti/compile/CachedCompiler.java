@@ -13,6 +13,7 @@
 package xsbti.compile;
 
 import xsbti.AnalysisCallback;
+import xsbti.APICallback;
 import xsbti.Logger;
 import xsbti.Reporter;
 import xsbti.VirtualFile;
@@ -47,7 +48,8 @@ public interface CachedCompiler {
   void run(
       VirtualFile[] sources,
       DependencyChanges changes,
-      AnalysisCallback callback,
+      APICallback callback,
+      AnalysisCallback oldCallback,
       Logger logger,
       Reporter delegate,
       CompileProgress progress);
