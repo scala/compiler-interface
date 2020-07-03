@@ -50,6 +50,7 @@ final class API(val global: CallbackGlobal) extends Compat with GlobalHelpers wi
         case v: VirtualFileWrap => v.underlying
       }
       debuglog("Traversing " + sourceFile)
+      callback.startSource(sourceFile)
       oldCallback.startSource(sourceFile)
       val extractApi = new ExtractAPI[global.type](global, sourceFile)
       val traverser = new TopLevelHandler(extractApi)

@@ -23,7 +23,9 @@ public interface APICallback {
     int PACKAGE_MODULE = 3;
   }
 
-  default void startSource(Path src) {}
+  default void startSource(VirtualFile src) {
+    // startSource needs to be VirtualFile because it needs to read the stamp.
+  }
 
   default void endSource() {}
 
