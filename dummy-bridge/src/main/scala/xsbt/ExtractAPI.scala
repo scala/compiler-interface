@@ -13,7 +13,7 @@ package xsbt
 
 import java.util.{ Arrays, Comparator }
 import scala.tools.nsc.symtab.Flags
-import xsbti.{ APICallback, VirtualFile }
+import scala.tools.sci.{ APICallback, VirtualFile }
 import xsbti.api._
 
 import scala.annotation.tailrec

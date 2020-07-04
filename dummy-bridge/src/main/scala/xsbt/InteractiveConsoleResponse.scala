@@ -11,7 +11,7 @@
 
 package xsbt
 
-import xsbti.InteractiveConsoleResult
+import scala.tools.sci.InteractiveConsoleResult
 
 case class InteractiveConsoleResponse(result: InteractiveConsoleResult, output: String)
-    extends xsbti.InteractiveConsoleResponse
+    extends scala.tools.sci.InteractiveConsoleResponse

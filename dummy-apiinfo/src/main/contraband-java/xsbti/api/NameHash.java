@@ -6,16 +6,16 @@
 package xsbti.api;
 public final class NameHash implements java.io.Serializable {
     
-    public static NameHash create(String _name, xsbti.UseScope _scope, int _hash) {
+    public static NameHash create(String _name, scala.tools.sci.UseScope _scope, int _hash) {
         return new NameHash(_name, _scope, _hash);
     }
-    public static NameHash of(String _name, xsbti.UseScope _scope, int _hash) {
+    public static NameHash of(String _name, scala.tools.sci.UseScope _scope, int _hash) {
         return new NameHash(_name, _scope, _hash);
     }
     private String name;
-    private xsbti.UseScope scope;
+    private scala.tools.sci.UseScope scope;
     private int hash;
-    protected NameHash(String _name, xsbti.UseScope _scope, int _hash) {
+    protected NameHash(String _name, scala.tools.sci.UseScope _scope, int _hash) {
         super();
         name = _name;
         scope = _scope;
@@ -25,7 +25,7 @@ public final class NameHash implements java.io.Serializable {
     public String name() {
         return this.name;
     }
-    public xsbti.UseScope scope() {
+    public scala.tools.sci.UseScope scope() {
         return this.scope;
     }
     public int hash() {
@@ -34,7 +34,7 @@ public final class NameHash implements java.io.Serializable {
     public NameHash withName(String name) {
         return new NameHash(name, scope, hash);
     }
-    public NameHash withScope(xsbti.UseScope scope) {
+    public NameHash withScope(scala.tools.sci.UseScope scope) {
         return new NameHash(name, scope, hash);
     }
     public NameHash withHash(int hash) {

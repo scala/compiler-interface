@@ -7,7 +7,7 @@ private[testpkg] object TestConsoleLogger {
 }
 
 // Remove dependencies to log4j to avoid mixup.
-private[testpkg] class TestConsoleLogger extends xsbti.Logger {
+private[testpkg] class TestConsoleLogger extends scala.tools.sci.Logger {
   final def debug(message: => String): Unit =
     System.out.println(s"[debug] $message")
   final def info(message: => String): Unit =

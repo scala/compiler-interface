@@ -13,7 +13,7 @@ package xsbt
 
 import java.nio.file.Path
 import java.io.File
-import xsbti.VirtualFile
+import scala.tools.sci.VirtualFile
 import scala.tools.nsc.Phase
 import scala.collection.JavaConverters._
 

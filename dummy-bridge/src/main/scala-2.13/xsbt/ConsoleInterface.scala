@@ -11,7 +11,7 @@
 
 package xsbt
 
-import xsbti.Logger
+import scala.tools.sci.Logger
 import scala.tools.nsc.interpreter.IMain
 import scala.tools.nsc.interpreter.shell.{ ILoop, ShellConfig, ReplReporterImpl }
 import scala.tools.nsc.{ GenericRunnerCommand, Settings }

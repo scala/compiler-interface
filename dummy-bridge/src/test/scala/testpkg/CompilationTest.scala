@@ -4,8 +4,8 @@ import verify._
 import java.nio.file.{ Path, Paths }
 import sbt.io.IO
 import sbt.io.syntax._
-import xsbti.{ APICallback, VirtualFile, VirtualFileRef }
-import xsbti.compile.{ CompileProgress, DependencyChanges }
+import scala.tools.sci.{ APICallback, VirtualFile, VirtualFileRef }
+import scala.tools.sci.compile.{ CompileProgress, DependencyChanges }
 
 trait CompilationTest {
 
@@ -18,7 +18,7 @@ trait CompilationTest {
     val oldCallback = new TestCallback
     val bridge = ReflectionUtil.bridgeInstance("xsbt.CompilerInterface")
     bridge match {
-      case intf: xsbti.CompilerInterface1 =>
+      case intf: scala.tools.sci.CompilerInterface1 =>
         val scalaLibraryJar = ReflectionUtil.scalaLibraryJar
         val cachedCompiler =
           intf.newCompiler(Array("-classpath", scalaLibraryJar.toString), output, log, reporter)

@@ -6,12 +6,30 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "compilationTimestamp", "type": "long"   },
-        { "name": "name",        "type": "String"          },
-        { "name": "api",         "type": "lazy Companions" },
-        { "name": "apiHash",     "type": "int"             },
-        { "name": "nameHashes",  "type": "NameHash*"       },
-        { "name": "hasMacro",    "type": "boolean"         },
+        {
+          "name": "compilationTimestamp",
+          "type": "long"
+        },
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "api",
+          "type": "lazy Companions"
+        },
+        {
+          "name": "apiHash",
+          "type": "int"
+        },
+        {
+          "name": "nameHashes",
+          "type": "NameHash*"
+        },
+        {
+          "name": "hasMacro",
+          "type": "boolean"
+        },
         {
           "name": "extraHash",
           "type": "int",
@@ -26,8 +44,14 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "classApi",  "type": "ClassLike" },
-        { "name": "objectApi", "type": "ClassLike" }
+        {
+          "name": "classApi",
+          "type": "ClassLike"
+        },
+        {
+          "name": "objectApi",
+          "type": "ClassLike"
+        }
       ]
     },
     {
@@ -36,9 +60,18 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "name", "type": "String" },
-        { "name": "scope", "type": "xsbti.UseScope" },
-        { "name": "hash", "type": "int"    }
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "scope",
+          "type": "scala.tools.sci.UseScope"
+        },
+        {
+          "name": "hash",
+          "type": "int"
+        }
       ]
     },
     {
@@ -47,7 +80,10 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "name", "type": "String" }
+        {
+          "name": "name",
+          "type": "String"
+        }
       ]
     },
     {
@@ -55,7 +91,6 @@
       "namespace": "xsbti.api",
       "target": "Java",
       "type": "interface",
-
       "types": [
         {
           "name": "Public",
@@ -69,12 +104,24 @@
           "target": "Java",
           "type": "interface",
           "fields": [
-            { "name": "qualifier", "type": "Qualifier" }
+            {
+              "name": "qualifier",
+              "type": "Qualifier"
+            }
           ],
-
           "types": [
-            { "name": "Protected", "namespace": "xsbti.api", "target": "Java", "type": "record" },
-            { "name": "Private",   "namespace": "xsbti.api", "target": "Java", "type": "record" }
+            {
+              "name": "Protected",
+              "namespace": "xsbti.api",
+              "target": "Java",
+              "type": "record"
+            },
+            {
+              "name": "Private",
+              "namespace": "xsbti.api",
+              "target": "Java",
+              "type": "record"
+            }
           ]
         }
       ]
@@ -85,15 +132,28 @@
       "target": "Java",
       "type": "interface",
       "types": [
-        { "name": "Unqualified",   "namespace": "xsbti.api", "target": "Java", "type": "record" },
-        { "name": "ThisQualifier", "namespace": "xsbti.api", "target": "Java", "type": "record" },
+        {
+          "name": "Unqualified",
+          "namespace": "xsbti.api",
+          "target": "Java",
+          "type": "record"
+        },
+        {
+          "name": "ThisQualifier",
+          "namespace": "xsbti.api",
+          "target": "Java",
+          "type": "record"
+        },
         {
           "name": "IdQualifier",
           "namespace": "xsbti.api",
           "target": "Java",
           "type": "record",
           "fields": [
-            { "name": "value", "type": "String" }
+            {
+              "name": "value",
+              "type": "String"
+            }
           ]
         }
       ]
@@ -104,8 +164,14 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "parameters", "type": "MethodParameter*" },
-        { "name": "isImplicit", "type": "boolean"          }
+        {
+          "name": "parameters",
+          "type": "MethodParameter*"
+        },
+        {
+          "name": "isImplicit",
+          "type": "boolean"
+        }
       ]
     },
     {
@@ -114,10 +180,22 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "name",       "type": "String"            },
-        { "name": "tpe",        "type": "Type"              },
-        { "name": "hasDefault", "type": "boolean"           },
-        { "name": "modifier",   "type": "ParameterModifier" }
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "tpe",
+          "type": "Type"
+        },
+        {
+          "name": "hasDefault",
+          "type": "boolean"
+        },
+        {
+          "name": "modifier",
+          "type": "ParameterModifier"
+        }
       ]
     },
     {
@@ -126,12 +204,30 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "id",             "type": "String"         },
-        { "name": "annotations",    "type": "Annotation*"    },
-        { "name": "typeParameters", "type": "TypeParameter*" },
-        { "name": "variance",       "type": "Variance"       },
-        { "name": "lowerBound",     "type": "Type"           },
-        { "name": "upperBound",     "type": "Type"           }
+        {
+          "name": "id",
+          "type": "String"
+        },
+        {
+          "name": "annotations",
+          "type": "Annotation*"
+        },
+        {
+          "name": "typeParameters",
+          "type": "TypeParameter*"
+        },
+        {
+          "name": "variance",
+          "type": "Variance"
+        },
+        {
+          "name": "lowerBound",
+          "type": "Type"
+        },
+        {
+          "name": "upperBound",
+          "type": "Type"
+        }
       ]
     },
     {
@@ -140,8 +236,14 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "base",      "type": "Type"                },
-        { "name": "arguments", "type": "AnnotationArgument*" }
+        {
+          "name": "base",
+          "type": "Type"
+        },
+        {
+          "name": "arguments",
+          "type": "AnnotationArgument*"
+        }
       ]
     },
     {
@@ -150,8 +252,14 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "name",  "type": "String" },
-        { "name": "value", "type": "String" }
+        {
+          "name": "name",
+          "type": "String"
+        },
+        {
+          "name": "value",
+          "type": "String"
+        }
       ]
     },
     {
@@ -159,21 +267,34 @@
       "namespace": "xsbti.api",
       "target": "Java",
       "type": "enum",
-      "symbols": [ "Contravariant", "Covariant", "Invariant" ]
+      "symbols": [
+        "Contravariant",
+        "Covariant",
+        "Invariant"
+      ]
     },
     {
       "name": "ParameterModifier",
       "namespace": "xsbti.api",
       "target": "Java",
       "type": "enum",
-      "symbols": [ "Repeated", "Plain", "ByName" ]
+      "symbols": [
+        "Repeated",
+        "Plain",
+        "ByName"
+      ]
     },
     {
       "name": "DefinitionType",
       "namespace": "xsbti.api",
       "target": "Java",
       "type": "enum",
-      "symbols": [ "Trait", "ClassDef", "Module", "PackageModule" ]
+      "symbols": [
+        "Trait",
+        "ClassDef",
+        "Module",
+        "PackageModule"
+      ]
     },
     {
       "name": "Path",
@@ -181,7 +302,10 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "components", "type": "PathComponent*" }
+        {
+          "name": "components",
+          "type": "PathComponent*"
+        }
       ]
     },
     {
@@ -196,17 +320,28 @@
           "target": "Java",
           "type": "record",
           "fields": [
-            { "name": "qualifier", "type": "Path" }
+            {
+              "name": "qualifier",
+              "type": "Path"
+            }
           ]
         },
-        { "name": "This", "namespace": "xsbti.api", "target": "Java", "type": "record" },
+        {
+          "name": "This",
+          "namespace": "xsbti.api",
+          "target": "Java",
+          "type": "record"
+        },
         {
           "name": "Id",
           "namespace": "xsbti.api",
           "target": "Java",
           "type": "record",
           "fields": [
-            { "name": "id", "type": "String" }
+            {
+              "name": "id",
+              "type": "String"
+            }
           ]
         }
       ]
@@ -261,9 +396,18 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "sourceClassName", "type": "String"                      },
-        { "name": "targetClassName", "type": "String"                      },
-        { "name": "context",         "type": "xsbti.api.DependencyContext" }
+        {
+          "name": "sourceClassName",
+          "type": "String"
+        },
+        {
+          "name": "targetClassName",
+          "type": "String"
+        },
+        {
+          "name": "context",
+          "type": "xsbti.api.DependencyContext"
+        }
       ]
     },
     {
@@ -272,10 +416,22 @@
       "target": "Java",
       "type": "record",
       "fields": [
-        { "name": "sourceClassName",        "type": "String"                      },
-        { "name": "targetProductClassName", "type": "String"                      },
-        { "name": "targetClass",            "type": "xsbti.api.AnalyzedClass"     },
-        { "name": "context",                "type": "xsbti.api.DependencyContext" }
+        {
+          "name": "sourceClassName",
+          "type": "String"
+        },
+        {
+          "name": "targetProductClassName",
+          "type": "String"
+        },
+        {
+          "name": "targetClass",
+          "type": "xsbti.api.AnalyzedClass"
+        },
+        {
+          "name": "context",
+          "type": "xsbti.api.DependencyContext"
+        }
       ]
     }
   ]

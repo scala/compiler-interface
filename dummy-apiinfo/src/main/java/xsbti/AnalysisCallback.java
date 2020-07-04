@@ -17,6 +17,7 @@ import xsbti.api.DependencyContext;
 import java.io.File;
 import java.nio.file.Path;
 import java.util.EnumSet;
+import scala.tools.sci.*;
 
 public interface AnalysisCallback extends OldCallback {
   /**

@@ -1,6 +1,6 @@
 package testpkg
 
-import xsbti._
+import scala.tools.sci._
 import xsbti.api.DefinitionType
 
 sealed trait APIEvent

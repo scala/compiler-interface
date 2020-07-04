@@ -1,6 +1,7 @@
 package testpkg
 
 import scala.collection.mutable
+import scala.tools.sci._
 import xsbti._
 import xsbti.api.{ DefinitionType, DependencyContext, ClassLike }
 import APIEvent._

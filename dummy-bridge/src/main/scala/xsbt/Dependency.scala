@@ -12,7 +12,7 @@
 package xsbt
 
 import java.nio.file.{ Path, Paths }
-import xsbti.VirtualFile
+import scala.tools.sci.VirtualFile
 import xsbti.api.DependencyContext
 import DependencyContext._
 

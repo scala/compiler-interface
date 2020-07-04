@@ -11,7 +11,7 @@
 
 package xsbt
 
-import xsbti.VirtualFile
+import scala.tools.sci.VirtualFile
 import scala.reflect.io.AbstractFile
 import java.io.{ File, InputStream, OutputStream }
 

@@ -1,9 +1,9 @@
 package testpkg
 
-import xsbti.{ Position, Severity }
+import scala.tools.sci.{ Position, Severity }
 
-class CollectingReporter extends xsbti.Reporter {
-  val buffer = collection.mutable.ArrayBuffer.empty[xsbti.Problem]
+class CollectingReporter extends scala.tools.sci.Reporter {
+  val buffer = collection.mutable.ArrayBuffer.empty[scala.tools.sci.Problem]
 
   def reset(): Unit = {
     // System.err.println(s"DEBUGME: Clearing errors: $buffer")
@@ -12,14 +12,14 @@ class CollectingReporter extends xsbti.Reporter {
   def hasErrors: Boolean = buffer.exists(_.severity == Severity.Error)
   def hasWarnings: Boolean = buffer.exists(_.severity == Severity.Warn)
   def printSummary(): Unit = ()
-  def problems: Array[xsbti.Problem] = buffer.toArray
+  def problems: Array[scala.tools.sci.Problem] = buffer.toArray
 
-  def log(problem: xsbti.Problem): Unit =
+  def log(problem: scala.tools.sci.Problem): Unit =
     log(problem.position, problem.message, problem.severity)
 
   /** Logs a message. */
-  def log(pos: xsbti.Position, msg: String, sev: xsbti.Severity): Unit = {
-    object MyProblem extends xsbti.Problem {
+  def log(pos: scala.tools.sci.Position, msg: String, sev: scala.tools.sci.Severity): Unit = {
+    object MyProblem extends scala.tools.sci.Problem {
       def category: String = null
       def severity: Severity = sev
       def message: String = msg
@@ -31,7 +31,7 @@ class CollectingReporter extends xsbti.Reporter {
   }
 
   /** Reports a comment. */
-  def comment(pos: xsbti.Position, msg: String): Unit = ()
+  def comment(pos: scala.tools.sci.Position, msg: String): Unit = ()
 
   override def toString = "CollectingReporter"
 }
