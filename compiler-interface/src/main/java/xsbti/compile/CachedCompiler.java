@@ -12,9 +12,9 @@
 
 package xsbti.compile;
 
-import xsbti.AnalysisCallback;
 import xsbti.APICallback;
 import xsbti.Logger;
+import xsbti.OldCallback;
 import xsbti.Reporter;
 import xsbti.VirtualFile;
 import java.io.File;
@@ -49,7 +49,7 @@ public interface CachedCompiler {
       VirtualFile[] sources,
       DependencyChanges changes,
       APICallback callback,
-      AnalysisCallback oldCallback,
+      OldCallback oldCallback,
       Logger logger,
       Reporter delegate,
       CompileProgress progress);

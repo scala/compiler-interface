@@ -25,7 +25,7 @@ public interface CompilerInterface1 {
       VirtualFile[] sources,
       DependencyChanges changes,
       APICallback callback,
-      AnalysisCallback oldCallback,
+      OldCallback oldCallback,
       Logger log,
       Reporter delegate,
       CompileProgress progress,

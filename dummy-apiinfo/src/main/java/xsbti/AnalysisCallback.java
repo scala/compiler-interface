@@ -18,7 +18,7 @@ import java.io.File;
 import java.nio.file.Path;
 import java.util.EnumSet;
 
-public interface AnalysisCallback {
+public interface AnalysisCallback extends OldCallback {
   /**
    * Set the source file mapped to a concrete {@link AnalysisCallback}.
    *

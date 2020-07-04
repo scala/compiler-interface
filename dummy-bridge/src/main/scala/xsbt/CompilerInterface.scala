@@ -16,6 +16,7 @@ import xsbti.{
   APICallback,
   CompilerInterface1,
   Logger,
+  OldCallback,
   Problem,
   Reporter,
   VirtualFile
@@ -40,7 +41,7 @@ final class CompilerInterface extends CompilerInterface1 {
       sources: Array[VirtualFile],
       changes: DependencyChanges,
       callback: APICallback,
-      oldCallback: AnalysisCallback,
+      oldCallback: OldCallback,
       log: Logger,
       delegate: Reporter,
       progress: CompileProgress,
@@ -128,7 +129,7 @@ private final class CachedCompiler0(args: Array[String], output: Output, initial
       sources: Array[VirtualFile],
       changes: DependencyChanges,
       callback: APICallback,
-      oldCallback: AnalysisCallback,
+      oldCallback: OldCallback,
       log: Logger,
       delegate: Reporter,
       progress: CompileProgress
@@ -136,7 +137,15 @@ private final class CachedCompiler0(args: Array[String], output: Output, initial
     debug(log, infoOnCachedCompiler(hashCode().toLong.toHexString))
     val dreporter = DelegatingReporter(settings, delegate)
     try {
-      run(sources.toList, changes, callback, oldCallback, log, dreporter, progress)
+      run(
+        sources.toList,
+        changes,
+        callback,
+        oldCallback.asInstanceOf[AnalysisCallback],
+        log,
+        dreporter,
+        progress
+      )
     } finally {
       dreporter.dropDelegate()
     }
