@@ -50,9 +50,12 @@ final class API(val global: CallbackGlobal) extends Compat with GlobalHelpers wi
         case v: VirtualFileWrap => v.underlying
       }
       debuglog("Traversing " + sourceFile)
-      callback.startSource(sourceFile)
+
+      if (callback != null) {
+        callback.startSource(sourceFile)
+      }
       oldCallback.startSource(sourceFile)
-      val extractApi = new ExtractAPI[global.type](global, sourceFile)
+      val extractApi = new ExtractAPI[global.type](global, sourceFile, callback)
       val traverser = new TopLevelHandler(extractApi)
       traverser.apply(unit.body)
 
@@ -77,6 +80,9 @@ final class API(val global: CallbackGlobal) extends Compat with GlobalHelpers wi
       extractApi.allExtractedNonLocalSymbols.foreach { cs =>
         // Only add the class symbols defined in this compilation unit
         if (cs.sourceFile != null) nonLocalClassSymbolsInCurrentUnits.+=(cs)
+      }
+      if (callback != null) {
+        callback.endSource()
       }
     }
   }
