@@ -12,7 +12,7 @@
 package xsbt
 
 import Compat._
-import xsbti.InteractiveConsoleResult
+import scala.tools.sci.InteractiveConsoleResult
 
 object InteractiveConsoleHelper {
   implicit def toConsoleResult(ir: Results.Result): InteractiveConsoleResult =

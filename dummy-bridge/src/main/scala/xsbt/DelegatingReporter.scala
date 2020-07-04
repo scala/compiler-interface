@@ -19,7 +19,10 @@ import scala.reflect.internal.util.{ FakePos, NoPosition, Position }
 import Compat._
 
 private object DelegatingReporter {
-  def apply(settings: scala.tools.nsc.Settings, delegate: xsbti.Reporter): DelegatingReporter =
+  def apply(
+      settings: scala.tools.nsc.Settings,
+      delegate: scala.tools.sci.Reporter
+  ): DelegatingReporter =
     new DelegatingReporter(Command.getWarnFatal(settings), Command.getNoWarn(settings), delegate)
 
   class PositionImpl(
@@ -36,7 +39,7 @@ private object DelegatingReporter {
       startColumn0: Option[Int],
       endLine0: Option[Int],
       endColumn0: Option[Int]
-  ) extends xsbti.Position {
+  ) extends scala.tools.sci.Position {
     val line = o2oi(line0)
     val lineContent = lineContent0
     val offset = o2oi(offset0)
@@ -78,7 +81,7 @@ private object DelegatingReporter {
     }
   }
 
-  private[xsbt] def convert(dirtyPos: Position): xsbti.Position = {
+  private[xsbt] def convert(dirtyPos: Position): scala.tools.sci.Position = {
     def cleanPos(pos: Position) = {
       Option(pos) match {
         case None | Some(NoPosition) => None
@@ -87,7 +90,7 @@ private object DelegatingReporter {
       }
     }
 
-    def makePosition(pos: Position): xsbti.Position = {
+    def makePosition(pos: Position): scala.tools.sci.Position = {
       val src = pos.source
       val sourcePath = src.file.path
       val sourceFile = new File(src.file.path)
@@ -160,7 +163,7 @@ private object DelegatingReporter {
 private final class DelegatingReporter(
     warnFatal: Boolean,
     noWarn: Boolean,
-    private[this] var delegate: xsbti.Reporter
+    private[this] var delegate: scala.tools.sci.Reporter
 ) extends scala.tools.nsc.reporters.Reporter {
   def dropDelegate(): Unit = { delegate = null }
   def error(msg: String): Unit = error(FakePos("scalac"), msg)
@@ -184,8 +187,8 @@ private final class DelegatingReporter(
     }
   }
 
-  import xsbti.Severity.{ Info, Warn, Error }
-  private[this] def convert(sev: Severity): xsbti.Severity = {
+  import scala.tools.sci.Severity.{ Info, Warn, Error }
+  private[this] def convert(sev: Severity): scala.tools.sci.Severity = {
     sev match {
       case INFO    => Info
       case WARNING => Warn
@@ -194,7 +197,7 @@ private final class DelegatingReporter(
   }
 
   // Define our own problem because the bridge should not depend on sbt util-logging.
-  import xsbti.{ Problem => XProblem, Position => XPosition, Severity => XSeverity }
+  import scala.tools.sci.{ Problem => XProblem, Position => XPosition, Severity => XSeverity }
   private final class CompileProblem(
       pos: XPosition,
       msg: String,

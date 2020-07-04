@@ -13,7 +13,7 @@ package xsbt
 
 import java.util.{ Arrays, Comparator }
 import scala.tools.nsc.symtab.Flags
-import xsbti.VirtualFile
+import scala.tools.sci.{ APICallback, VirtualFile }
 import xsbti.api._
 
 import scala.annotation.tailrec
@@ -55,7 +55,8 @@ class ExtractAPI[GlobalType <: Global](
     val global: GlobalType,
     // Tracks the source file associated with the CompilationUnit currently being processed by the API phase.
     // This is used when recording inheritance dependencies.
-    sourceFile: VirtualFile
+    sourceFile: VirtualFile,
+    callback: APICallback
 ) extends Compat
     with ClassName
     with GlobalHelpers {
@@ -79,6 +80,12 @@ class ExtractAPI[GlobalType <: Global](
   private[this] val allNonLocalClassSymbols = perRunCaches.newSet[Symbol]()
   private[this] val allNonLocalClassesInSrc = perRunCaches.newSet[xsbti.api.ClassLike]()
   private[this] val _mainClasses = perRunCaches.newSet[String]()
+
+  final def apiCallback(op: APICallback => Unit): Unit = {
+    if (callback != null) {
+      op(callback)
+    }
+  }
 
   /**
    * Implements a work-around for https://github.com/sbt/sbt/issues/823
@@ -698,12 +705,21 @@ class ExtractAPI[GlobalType <: Global](
         if (sym.isPackageObjectClass) DefinitionType.PackageModule
         else DefinitionType.Module
       } else DefinitionType.ClassDef
+
+    val intDefType: Int =
+      if (sym.isTrait) APICallback.DefinitionType.TRAIT
+      else if (sym.isModuleClass) {
+        if (sym.isPackageObjectClass) APICallback.DefinitionType.PACKAGE_MODULE
+        else APICallback.DefinitionType.MODULE
+      } else APICallback.DefinitionType.CLASS_DEF
+
     val childrenOfSealedClass = sort(sym.children.toArray).map(c => processType(c, c.tpe))
     val topLevel = sym.owner.isPackageClass
     val anns = annotations(in, c)
     val modifiers = getModifiers(c)
     val acc = getAccess(c)
     val name = classNameAsSeenIn(in, c)
+    apiCallback(_.startClassLike(intDefType, name, topLevel))
     val tParams = typeParameters(in, sym) // look at class symbol
     val selfType = lzy(this.selfType(in, sym))
     def constructClass(structure: xsbti.api.Lazy[Structure]): ClassLike = {
@@ -731,6 +747,8 @@ class ExtractAPI[GlobalType <: Global](
     if (sym.isStatic && defType == DefinitionType.Module && definitions.hasJavaMainMethod(sym)) {
       _mainClasses += name
     }
+
+    apiCallback(_.endClassLike())
 
     val classDef = xsbti.api.ClassLikeDef.of(
       name,

@@ -4,8 +4,8 @@ import verify._
 import java.nio.file.{ Path, Paths }
 import sbt.io.IO
 import sbt.io.syntax._
-import xsbti.{ VirtualFile, VirtualFileRef }
-import xsbti.compile.{ CompileProgress, DependencyChanges }
+import scala.tools.sci.{ VirtualFile, VirtualFileRef }
+import scala.tools.sci.compile.{ CompileProgress, DependencyChanges }
 
 object CompilerInterfaceTest extends BasicTestSuite {
 
@@ -16,7 +16,8 @@ object CompilerInterfaceTest extends BasicTestSuite {
       val output = new ConcreteSingleOutput(targetDir.toPath)
       val log = TestConsoleLogger()
       val reporter = new CollectingReporter
-      val callback = new TestCallback
+      val callback = new TestAPICallback
+      val oldCallback = new TestCallback
       val vFile: VirtualFile =
         StringVirtualFile("src/A.scala", """package example
 
@@ -27,11 +28,19 @@ object A {
       val vs = Vector(vFile)
       val bridge = ReflectionUtil.bridgeInstance("xsbt.CompilerInterface")
       bridge match {
-        case intf: xsbti.CompilerInterface1 =>
+        case intf: scala.tools.sci.CompilerInterface1 =>
           val scalaLibraryJar = ReflectionUtil.scalaLibraryJar
           val cachedCompiler =
             intf.newCompiler(Array("-classpath", scalaLibraryJar.toString), output, log, reporter)
-          cachedCompiler.run(vs.toArray, emptyChanges, callback, log, reporter, ignoreProgress)
+          cachedCompiler.run(
+            vs.toArray,
+            emptyChanges,
+            callback,
+            oldCallback,
+            log,
+            reporter,
+            ignoreProgress
+          )
           assert((targetDir / "example" / "A.class").exists)
           assert((targetDir / "example" / "A$.class").exists)
       }
@@ -50,6 +59,7 @@ object A {
   }
 }
 
-final class ConcreteSingleOutput(val getOutputDirectory: Path) extends xsbti.compile.SingleOutput {
+final class ConcreteSingleOutput(val getOutputDirectory: Path)
+    extends scala.tools.sci.compile.SingleOutput {
   override def toString: String = s"SingleOutput($getOutputDirectory)"
 }

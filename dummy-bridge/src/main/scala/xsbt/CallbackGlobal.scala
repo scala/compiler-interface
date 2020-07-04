@@ -11,9 +11,9 @@
 
 package xsbt
 
-import xsbti.{ AnalysisCallback, Severity }
-import xsbti.compile._
-
+import xsbti.AnalysisCallback
+import scala.tools.sci.{ APICallback, Severity }
+import scala.tools.sci.compile._
 import scala.tools.nsc._
 import io.AbstractFile
 import java.nio.file.{ Files, Path }
@@ -27,7 +27,8 @@ sealed abstract class CallbackGlobal(
     output: Output
 ) extends Global(settings, reporter) {
 
-  def callback: AnalysisCallback
+  def callback: APICallback
+  def oldCallback: AnalysisCallback
   def findAssociatedFile(name: String): Option[(AbstractFile, Boolean)]
 
   def fullName(
@@ -125,7 +126,7 @@ sealed class ZincCompiler(settings: Settings, dreporter: DelegatingReporter, out
     override val runsBefore = List("erasure")
     // TODO: Consider migrating to "uncurry" for `runsBefore`.
     // TODO: Consider removing the system property to modify which phase is used for API extraction.
-    val runsRightAfter = Option(System.getProperty("sbt.api.phase")) orElse Some("pickler")
+    val runsRightAfter = Some("pickler")
   } with SubComponent {
     val api = new API(global)
     def newPhase(prev: Phase) = api.newPhase(prev)
@@ -134,7 +135,7 @@ sealed class ZincCompiler(settings: Settings, dreporter: DelegatingReporter, out
 
   override lazy val phaseDescriptors = {
     phasesSet += sbtAnalyzer
-    if (callback.enabled()) {
+    if (oldCallback.enabled()) {
       phasesSet += sbtDependency
       phasesSet += apiExtractor
     }
@@ -154,7 +155,7 @@ sealed class ZincCompiler(settings: Settings, dreporter: DelegatingReporter, out
 
       JarUtils.outputJar match {
         case Some(outputJar) =>
-          if (!callback.classesInOutputJar().contains(classFilePath)) None
+          if (!oldCallback.classesInOutputJar().contains(classFilePath)) None
           else {
             /*
              * Important implementation detail: `classInJar` has the format of `$JAR!$CLASS_REF`
@@ -240,18 +241,29 @@ sealed class ZincCompiler(settings: Settings, dreporter: DelegatingReporter, out
     b.toString
   }
 
-  private[this] var callback0: AnalysisCallback = null
+  private[this] var oldCallback0: AnalysisCallback = null
 
   /** Returns the active analysis callback, set by [[set]] and cleared by [[clear]]. */
-  def callback: AnalysisCallback = callback0
+  def oldCallback: AnalysisCallback = oldCallback0
 
-  final def set(callback: AnalysisCallback, dreporter: DelegatingReporter): Unit = {
+  private[this] var callback0: APICallback = null
+
+  /** Returns the active callback, set by [[set]] and cleared by [[clear]]. */
+  override def callback: APICallback = callback0
+
+  final def set(
+      callback: APICallback,
+      oldCallback: AnalysisCallback,
+      dreporter: DelegatingReporter
+  ): Unit = {
     this.callback0 = callback
+    this.oldCallback0 = oldCallback
     reporter = dreporter
   }
 
   final def clear(): Unit = {
     callback0 = null
+    oldCallback0 = null
     superDropRun()
     reporter = null
     this match {
@@ -263,7 +275,7 @@ sealed class ZincCompiler(settings: Settings, dreporter: DelegatingReporter, out
   // Scala 2.10.x and later
   private[xsbt] def logUnreportedWarnings(seq: Seq[(String, List[(Position, String)])]): Unit = {
     for ((what, warnings) <- seq; (pos, msg) <- warnings)
-      yield callback.problem(what, DelegatingReporter.convert(pos), msg, Severity.Warn, false)
+      yield oldCallback.problem(what, DelegatingReporter.convert(pos), msg, Severity.Warn, false)
     ()
   }
 }

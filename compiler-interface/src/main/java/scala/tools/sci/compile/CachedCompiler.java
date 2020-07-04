@@ -1,0 +1,56 @@
+/*
+ * Scala compiler interface
+ *
+ * Copyright Lightbend, Inc. and Mark Harrah
+ *
+ * Licensed under Apache License 2.0
+ * (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ * See the NOTICE file distributed with this work for
+ * additional information regarding copyright ownership.
+ */
+
+package scala.tools.sci.compile;
+
+import scala.tools.sci.APICallback;
+import scala.tools.sci.Logger;
+import scala.tools.sci.OldCallback;
+import scala.tools.sci.Reporter;
+import scala.tools.sci.VirtualFile;
+import java.io.File;
+
+/**
+ * Define the interface of a cached Scala compiler that can be run.
+ *
+ * <p>This cached compiler hides the implementation of a compiler by just defining two operations:
+ * {@link #commandArguments(File[])} and
+ */
+public interface CachedCompiler {
+  /**
+   * Return an array of arguments that represent a command-line like equivalent of a call to the
+   * Scala compiler, but without the command itself.
+   *
+   * @param sources The source files that the compiler must compile.
+   * @return The array of arguments of the Scala compiler.
+   */
+  String[] commandArguments(File[] sources);
+
+  /**
+   * Run the cached Scala compiler with inputs of incremental compilation.
+   *
+   * @param sources The source files to be compiled.
+   * @param changes The changes that have occurred since last compilation.
+   * @param callback The callback injected by the incremental compiler.
+   * @param logger The logger of the incremental compilation.
+   * @param delegate The reporter that informs on the compiler's output.
+   * @param progress The compiler progress associated with a Scala compiler.
+   */
+  void run(
+      VirtualFile[] sources,
+      DependencyChanges changes,
+      APICallback callback,
+      OldCallback oldCallback,
+      Logger logger,
+      Reporter delegate,
+      CompileProgress progress);
+}

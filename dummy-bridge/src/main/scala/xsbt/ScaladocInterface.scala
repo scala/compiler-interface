@@ -11,12 +11,17 @@
 
 package xsbt
 
-import xsbti.{ Logger, VirtualFile }
+import scala.tools.sci.{ Logger, VirtualFile }
 import scala.reflect.io.AbstractFile
 import Log.debug
 
 class ScaladocInterface {
-  def run(sources: Array[VirtualFile], args: Array[String], log: Logger, delegate: xsbti.Reporter) =
+  def run(
+      sources: Array[VirtualFile],
+      args: Array[String],
+      log: Logger,
+      delegate: scala.tools.sci.Reporter
+  ) =
     (new Runner(sources, args, log, delegate)).run
 }
 
@@ -24,7 +29,7 @@ private class Runner(
     sources: Array[VirtualFile],
     args: Array[String],
     log: Logger,
-    delegate: xsbti.Reporter
+    delegate: scala.tools.sci.Reporter
 ) {
   import scala.tools.nsc.{ doc, Global, reporters }
   import reporters.Reporter

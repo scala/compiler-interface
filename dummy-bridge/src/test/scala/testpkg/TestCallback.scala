@@ -5,7 +5,7 @@ import java.util
 
 import xsbti._
 import xsbti.api.{ DependencyContext, ClassLike }
-
+import scala.tools.sci._
 import scala.collection.mutable.ArrayBuffer
 
 class TestCallback extends AnalysisCallback {
@@ -89,9 +89,9 @@ class TestCallback extends AnalysisCallback {
 
   def problem(
       category: String,
-      pos: xsbti.Position,
+      pos: scala.tools.sci.Position,
       message: String,
-      severity: xsbti.Severity,
+      severity: scala.tools.sci.Severity,
       reported: Boolean
   ): Unit = ()
 

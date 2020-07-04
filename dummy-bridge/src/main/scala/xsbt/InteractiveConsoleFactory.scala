@@ -11,9 +11,9 @@
 
 package xsbt
 
-import xsbti.Logger
+import scala.tools.sci.Logger
 
-class InteractiveConsoleFactory extends xsbti.InteractiveConsoleFactory {
+class InteractiveConsoleFactory extends scala.tools.sci.InteractiveConsoleFactory {
   def createConsole(
       args: Array[String],
       bootClasspathString: String,
@@ -24,7 +24,7 @@ class InteractiveConsoleFactory extends xsbti.InteractiveConsoleFactory {
       bindNames: Array[String],
       bindValues: Array[AnyRef],
       log: Logger
-  ): xsbti.InteractiveConsoleInterface =
+  ): scala.tools.sci.InteractiveConsoleInterface =
     new InteractiveConsoleInterface(
       args,
       bootClasspathString,

@@ -15,8 +15,7 @@ import java.io.{ PrintWriter, StringWriter }
 
 import scala.tools.nsc.interpreter.IMain
 import scala.tools.nsc.{ GenericRunnerCommand, Settings }
-
-import xsbti.Logger
+import scala.tools.sci.Logger
 
 import Compat._
 import InteractiveConsoleHelper._
@@ -31,7 +30,7 @@ class InteractiveConsoleInterface(
     bindNames: Array[String],
     bindValues: Array[AnyRef],
     log: Logger
-) extends xsbti.InteractiveConsoleInterface {
+) extends scala.tools.sci.InteractiveConsoleInterface {
 
   lazy val interpreterSettings: Settings = InteractiveMakeSettings.sync(args.toList, onError)
 

@@ -12,7 +12,7 @@
 package xsbt
 
 import java.nio.file.{ Path, Paths }
-import xsbti.VirtualFile
+import scala.tools.sci.VirtualFile
 import xsbti.api.DependencyContext
 import DependencyContext._
 
@@ -47,7 +47,7 @@ final class Dependency(val global: CallbackGlobal) extends LocateClassFile with 
     override def run(): Unit = {
       val start = System.currentTimeMillis
       super.run()
-      callback.dependencyPhaseCompleted()
+      oldCallback.dependencyPhaseCompleted()
       val stop = System.currentTimeMillis
       debuglog("Dependency phase took : " + ((stop - start) / 1000.0) + " s")
     }
@@ -117,7 +117,7 @@ final class Dependency(val global: CallbackGlobal) extends LocateClassFile with 
       val fromClassName = classNameAsString(dep.from)
 
       def binaryDependency(file: Path, binaryClassName: String) = {
-        callback.binaryDependency(file, binaryClassName, fromClassName, sourceFile, context)
+        oldCallback.binaryDependency(file, binaryClassName, fromClassName, sourceFile, context)
       }
       import scala.tools.nsc.io.AbstractFile
       def processExternalDependency(binaryClassName: String, at: AbstractFile): Unit = {
@@ -183,7 +183,7 @@ final class Dependency(val global: CallbackGlobal) extends LocateClassFile with 
           // We cannot ignore dependencies coming from the same source file because
           // the dependency info needs to propagate. See source-dependencies/trait-trait-211.
           val onClassName = classNameAsString(dep.to)
-          callback.classDependency(onClassName, fromClassName, context)
+          oldCallback.classDependency(onClassName, fromClassName, context)
         } else ()
       }
     }

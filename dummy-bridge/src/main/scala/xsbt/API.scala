@@ -13,8 +13,8 @@ package xsbt
 
 import scala.tools.nsc.Phase
 import scala.tools.nsc.symtab.Flags
+import scala.tools.sci.VirtualFile
 import xsbti.api._
-import xsbti.VirtualFile
 
 object API {
   val name = "xsbt-api"
@@ -38,7 +38,7 @@ final class API(val global: CallbackGlobal) extends Compat with GlobalHelpers wi
       registerGeneratedClasses(nonLocalClassSymbolsInCurrentUnits.iterator)
       nonLocalClassSymbolsInCurrentUnits.clear()
 
-      callback.apiPhaseCompleted()
+      oldCallback.apiPhaseCompleted()
       val stop = System.currentTimeMillis
       debuglog("API phase took : " + ((stop - start) / 1000.0) + " s")
     }
@@ -50,8 +50,12 @@ final class API(val global: CallbackGlobal) extends Compat with GlobalHelpers wi
         case v: VirtualFileWrap => v.underlying
       }
       debuglog("Traversing " + sourceFile)
-      callback.startSource(sourceFile)
-      val extractApi = new ExtractAPI[global.type](global, sourceFile)
+
+      if (callback != null) {
+        callback.startSource(sourceFile)
+      }
+      oldCallback.startSource(sourceFile)
+      val extractApi = new ExtractAPI[global.type](global, sourceFile, callback)
       val traverser = new TopLevelHandler(extractApi)
       traverser.apply(unit.body)
 
@@ -65,17 +69,20 @@ final class API(val global: CallbackGlobal) extends Compat with GlobalHelpers wi
 
       val classApisIt = classApis.iterator
       while (classApisIt.hasNext) {
-        callback.api(sourceFile, classApisIt.next())
+        oldCallback.api(sourceFile, classApisIt.next())
       }
 
       val mainClassesIt = mainClasses.iterator
       while (mainClassesIt.hasNext) {
-        callback.mainClass(sourceFile, mainClassesIt.next())
+        oldCallback.mainClass(sourceFile, mainClassesIt.next())
       }
 
       extractApi.allExtractedNonLocalSymbols.foreach { cs =>
         // Only add the class symbols defined in this compilation unit
         if (cs.sourceFile != null) nonLocalClassSymbolsInCurrentUnits.+=(cs)
+      }
+      if (callback != null) {
+        callback.endSource()
       }
     }
   }
@@ -139,7 +146,7 @@ final class API(val global: CallbackGlobal) extends Compat with GlobalHelpers wi
           }
           val zincClassName = names.className
           val srcClassName = classNameAsString(symbol)
-          callback.generatedNonLocalClass(
+          oldCallback.generatedNonLocalClass(
             sourceJavaFile,
             classFile.toPath,
             zincClassName,

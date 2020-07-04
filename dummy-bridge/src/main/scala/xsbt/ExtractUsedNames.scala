@@ -15,7 +15,7 @@ import java.util.{ HashMap => JavaMap }
 import java.util.{ HashSet => JavaSet }
 import java.util.EnumSet
 
-import xsbti.UseScope
+import scala.tools.sci.UseScope
 // Left for compatibility
 import Compat._
 
@@ -149,7 +149,7 @@ class ExtractUsedNames[GlobalType <: CallbackGlobal](val global: GlobalType)
             existingScopes
           }
         }
-        callback.usedName(className, useName, useScopes)
+        oldCallback.usedName(className, useName, useScopes)
       }
     }
   }
