@@ -60,9 +60,9 @@ lazy val compilerInterface = (project in file("compiler-interface"))
     commonSettings,
     name := "Compiler Interface",
     scalaVersion := scala212,
-    managedSourceDirectories in Compile +=
+    Compile / managedSourceDirectories +=
       baseDirectory.value / "src" / "main" / "contraband-java",
-    sourceManaged in (Compile, generateContrabands) := baseDirectory.value / "src" / "main" / "contraband-java",
+    Compile / generateContrabands / sourceManaged := baseDirectory.value / "src" / "main" / "contraband-java",
     crossPaths := false,
     autoScalaLibrary := false,
     mimaPreviousArtifacts := Set(
@@ -104,9 +104,9 @@ lazy val dummyApiInfo = (project in file("dummy-apiinfo"))
   .dependsOn(compilerInterface)
   .settings(
     scalaVersion := scala212,
-    managedSourceDirectories in Compile +=
+    Compile / managedSourceDirectories +=
       baseDirectory.value / "src" / "main" / "contraband-java",
-    sourceManaged in (Compile, generateContrabands) := baseDirectory.value / "src" / "main" / "contraband-java",
+    Compile / generateContrabands / sourceManaged := baseDirectory.value / "src" / "main" / "contraband-java",
     crossPaths := false,
     autoScalaLibrary := false,
     publish / skip := true,
